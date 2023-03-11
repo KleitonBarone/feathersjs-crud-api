@@ -1,28 +1,74 @@
 {
   "name": "feathersjs-crud-api",
-  "version": "1.0.0",
-  "description": "Simple Crud Api using FeatherJs Framework",
-  "main": "./src/index.ts",
-  "scripts": {
-    "start": "npx ts-node ./src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/KleitonBarone/feathersjs-crud-api.git"
-  },
+  "description": "",
+  "version": "0.0.0",
+  "homepage": "",
+  "private": true,
+  "keywords": [
+    "feathers"
+  ],
   "author": "Kleiton Barone",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/KleitonBarone/feathersjs-crud-api/issues"
+  "contributors": [],
+  "bugs": {},
+  "engines": {
+    "node": ">= 18.13.0"
   },
-  "homepage": "https://github.com/KleitonBarone/feathersjs-crud-api#readme",
-  "devDependencies": {
-    "@types/node": "^18.15.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.5"
+  "feathers": {
+    "language": "ts",
+    "packager": "npm",
+    "database": "sqlite",
+    "framework": "koa",
+    "transports": [
+      "rest",
+      "websockets"
+    ],
+    "schema": "typebox"
+  },
+  "directories": {
+    "lib": "src",
+    "test": "test"
+  },
+  "main": "lib/index",
+  "scripts": {
+    "dev": "nodemon -x ts-node src/index.ts",
+    "compile": "shx rm -rf lib/ && tsc",
+    "start": "node lib/",
+    "prettier": "npx prettier \"**/*.ts\" --write",
+    "mocha": "cross-env NODE_ENV=test mocha test/ --require ts-node/register --recursive --extension .ts --exit",
+    "test": "cross-env NODE_ENV=test npm run migrate && npm run mocha",
+    "bundle:client": "npm run compile && npm pack --pack-destination ./public",
+    "migrate": "knex migrate:latest",
+    "migrate:make": "knex migrate:make"
   },
   "dependencies": {
-    "@feathersjs/feathers": "^5.0.0"
+    "@feathersjs/adapter-commons": "^5.0.0",
+    "@feathersjs/authentication": "^5.0.0",
+    "@feathersjs/authentication-client": "^5.0.0",
+    "@feathersjs/configuration": "^5.0.0",
+    "@feathersjs/errors": "^5.0.0",
+    "@feathersjs/feathers": "^5.0.0",
+    "@feathersjs/knex": "^5.0.0",
+    "@feathersjs/koa": "^5.0.0",
+    "@feathersjs/schema": "^5.0.0",
+    "@feathersjs/socketio": "^5.0.0",
+    "@feathersjs/transport-commons": "^5.0.0",
+    "@feathersjs/typebox": "^5.0.0",
+    "knex": "^2.4.2",
+    "sqlite3": "^5.1.4",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@feathersjs/cli": "^5.0.0",
+    "@feathersjs/rest-client": "^5.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.14.1",
+    "axios": "^1.3.4",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.2.0",
+    "nodemon": "^2.0.21",
+    "prettier": "^2.8.4",
+    "shx": "^0.3.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
   }
 }
