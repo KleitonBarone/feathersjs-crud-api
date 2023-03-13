@@ -5,7 +5,8 @@ export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable('todo', (table) => {
         table.increments('id');
 
-        table.string('text');
+        table.string('task');
+        table.boolean('isDone');
     });
 }
 

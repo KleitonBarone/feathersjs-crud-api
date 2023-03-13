@@ -10,7 +10,8 @@ import { dataValidator, queryValidator } from '../../validators';
 export const todoSchema = Type.Object(
     {
         id: Type.Number(),
-        text: Type.String(),
+        task: Type.String(),
+        isDone: Type.Boolean(),
     },
     { $id: 'Todo', additionalProperties: false },
 );
@@ -21,7 +22,7 @@ export const todoResolver = resolve<Todo, HookContext>({});
 export const todoExternalResolver = resolve<Todo, HookContext>({});
 
 // Schema for creating new entries
-export const todoDataSchema = Type.Pick(todoSchema, ['text'], {
+export const todoDataSchema = Type.Pick(todoSchema, ['task', 'isDone'], {
     $id: 'TodoData',
 });
 export type TodoData = Static<typeof todoDataSchema>;
@@ -37,7 +38,7 @@ export const todoPatchValidator = getValidator(todoPatchSchema, dataValidator);
 export const todoPatchResolver = resolve<Todo, HookContext>({});
 
 // Schema for allowed query properties
-export const todoQueryProperties = Type.Pick(todoSchema, ['id', 'text']);
+export const todoQueryProperties = Type.Pick(todoSchema, ['id', 'task', 'isDone']);
 export const todoQuerySchema = Type.Intersect(
     [
         querySyntax(todoQueryProperties),
