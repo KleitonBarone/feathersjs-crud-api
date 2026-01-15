@@ -14,7 +14,7 @@ A minimal CRUD API built with Feathers v5 (Dove), Koa, Knex, and SQLite. It expo
 
 ## Requirements
 
-- Node.js >= 18.13.0
+- Node.js >= 24.0.0
 - npm
 
 ## Quick Start
