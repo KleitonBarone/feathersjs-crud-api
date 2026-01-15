@@ -1,20 +1,18 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
 
 import { hooks as schemaHooks } from '@feathersjs/schema';
-
+import type { Application } from '../../declarations';
+import { getOptions, TodoService } from './todo.class';
 import {
+    todoDataResolver,
     todoDataValidator,
+    todoExternalResolver,
+    todoPatchResolver,
     todoPatchValidator,
+    todoQueryResolver,
     todoQueryValidator,
     todoResolver,
-    todoExternalResolver,
-    todoDataResolver,
-    todoPatchResolver,
-    todoQueryResolver,
 } from './todo.schema';
-
-import type { Application } from '../../declarations';
-import { TodoService, getOptions } from './todo.class';
 
 export const todoPath = 'todo';
 export const todoMethods = ['find', 'get', 'create', 'patch', 'remove'] as const;

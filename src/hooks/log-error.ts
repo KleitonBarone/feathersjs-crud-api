@@ -2,14 +2,16 @@
 import type { HookContext, NextFunction } from '../declarations';
 import { logger } from '../logger';
 
-export const logError = async (context: HookContext, next: NextFunction) => {
+export const logError = async (_context: HookContext, next: NextFunction) => {
     try {
         await next();
-    } catch (error: any) {
-        logger.error(error.stack);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            logger.error(error.stack);
+        }
 
         // Log validation errors
-        if (error.data) {
+        if (error && typeof error === 'object' && 'data' in error) {
             logger.error('Data: %O', error.data);
         }
 

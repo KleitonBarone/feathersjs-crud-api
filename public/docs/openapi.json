@@ -1,0 +1,275 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Todo API",
+    "description": "FeathersJS CRUD API for Todo management",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3030",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "todo",
+      "description": "Todo item management"
+    }
+  ],
+  "paths": {
+    "/todo": {
+      "get": {
+        "summary": "Find all todos",
+        "description": "Retrieve all todo items with optional filtering and pagination",
+        "operationId": "findTodos",
+        "tags": ["todo"],
+        "parameters": [
+          {
+            "name": "$limit",
+            "in": "query",
+            "description": "Number of results to return (max 50)",
+            "schema": { "type": "integer", "default": 10, "maximum": 50 }
+          },
+          {
+            "name": "$skip",
+            "in": "query",
+            "description": "Number of results to skip",
+            "schema": { "type": "integer", "default": 0 }
+          },
+          {
+            "name": "$sort[id]",
+            "in": "query",
+            "description": "Sort by id (1 = ascending, -1 = descending)",
+            "schema": { "type": "integer", "enum": [1, -1] }
+          },
+          {
+            "name": "isDone",
+            "in": "query",
+            "description": "Filter by completion status",
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of todos",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TodoList" },
+                "example": {
+                  "total": 2,
+                  "limit": 10,
+                  "skip": 0,
+                  "data": [
+                    { "id": 1, "task": "Buy groceries", "isDone": false },
+                    { "id": 2, "task": "Walk the dog", "isDone": true }
+                  ]
+                }
+              }
+            }
+          },
+          "500": { "description": "Server error" }
+        }
+      },
+      "post": {
+        "summary": "Create a todo",
+        "description": "Create a new todo item",
+        "operationId": "createTodo",
+        "tags": ["todo"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TodoData" },
+              "example": { "task": "Learn FeathersJS", "isDone": false }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created todo",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" },
+                "example": { "id": 3, "task": "Learn FeathersJS", "isDone": false }
+              }
+            }
+          },
+          "400": { "description": "Validation error" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/todo/{id}": {
+      "get": {
+        "summary": "Get a todo",
+        "description": "Retrieve a single todo item by ID",
+        "operationId": "getTodo",
+        "tags": ["todo"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Todo ID",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo item",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" },
+                "example": { "id": 1, "task": "Buy groceries", "isDone": false }
+              }
+            }
+          },
+          "404": { "description": "Todo not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "patch": {
+        "summary": "Update a todo",
+        "description": "Partially update a todo item",
+        "operationId": "patchTodo",
+        "tags": ["todo"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Todo ID",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TodoPatch" },
+              "example": { "isDone": true }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated todo",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" },
+                "example": { "id": 1, "task": "Buy groceries", "isDone": true }
+              }
+            }
+          },
+          "400": { "description": "Validation error" },
+          "404": { "description": "Todo not found" },
+          "500": { "description": "Server error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a todo",
+        "description": "Delete a todo item",
+        "operationId": "removeTodo",
+        "tags": ["todo"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Todo ID",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted todo",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Todo" }
+              }
+            }
+          },
+          "404": { "description": "Todo not found" },
+          "500": { "description": "Server error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Todo": {
+        "type": "object",
+        "description": "A todo item",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier"
+          },
+          "task": {
+            "type": "string",
+            "description": "The todo task description"
+          },
+          "isDone": {
+            "type": "boolean",
+            "description": "Whether the task is completed"
+          }
+        },
+        "required": ["id", "task", "isDone"]
+      },
+      "TodoData": {
+        "type": "object",
+        "description": "Data for creating a todo",
+        "properties": {
+          "task": {
+            "type": "string",
+            "description": "The todo task description"
+          },
+          "isDone": {
+            "type": "boolean",
+            "description": "Whether the task is completed"
+          }
+        },
+        "required": ["task", "isDone"]
+      },
+      "TodoPatch": {
+        "type": "object",
+        "description": "Data for updating a todo (all fields optional)",
+        "properties": {
+          "task": {
+            "type": "string",
+            "description": "The todo task description"
+          },
+          "isDone": {
+            "type": "boolean",
+            "description": "Whether the task is completed"
+          }
+        }
+      },
+      "TodoList": {
+        "type": "object",
+        "description": "Paginated list of todos",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": "Total number of records"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Maximum number of results per page"
+          },
+          "skip": {
+            "type": "integer",
+            "description": "Number of results skipped"
+          },
+          "data": {
+            "type": "array",
+            "description": "Array of todo items",
+            "items": { "$ref": "#/components/schemas/Todo" }
+          }
+        },
+        "required": ["total", "limit", "skip", "data"]
+      }
+    }
+  }
+}

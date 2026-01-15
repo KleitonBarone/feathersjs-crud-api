@@ -1,6 +1,7 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/databases.html
-import knex from 'knex';
+
 import type { Knex } from 'knex';
+import knex from 'knex';
 import type { Application } from './declarations';
 
 declare module './declarations' {
@@ -11,7 +12,10 @@ declare module './declarations' {
 
 export const sqlite = (app: Application) => {
     const config = app.get('sqlite');
-    const db = knex(config!);
+    if (!config) {
+        throw new Error('SQLite configuration is missing');
+    }
+    const db = knex(config);
 
     app.set('sqliteClient', db);
 };
