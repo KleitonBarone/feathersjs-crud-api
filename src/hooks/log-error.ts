@@ -6,13 +6,16 @@ export const logError = async (_context: HookContext, next: NextFunction) => {
     try {
         await next();
     } catch (error: unknown) {
-        if (error instanceof Error) {
-            logger.error(error.stack);
-        }
+        // Skip logging in test environment
+        if (process.env.NODE_ENV !== 'test') {
+            if (error instanceof Error) {
+                logger.error(error.stack);
+            }
 
-        // Log validation errors
-        if (error && typeof error === 'object' && 'data' in error) {
-            logger.error('Data: %O', error.data);
+            // Log validation errors
+            if (error && typeof error === 'object' && 'data' in error) {
+                logger.error('Data: %O', error.data);
+            }
         }
 
         throw error;

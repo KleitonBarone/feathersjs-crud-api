@@ -104,5 +104,6 @@ dist
 .tern-port
 
 feathersjs-crud-api.sqlite
+feathersjs-crud-api-test.sqlite
 
 lib/

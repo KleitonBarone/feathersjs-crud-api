@@ -33,12 +33,14 @@
     "dev": "tsx watch src/index.ts",
     "compile": "shx rm -rf lib/ && tsc",
     "start": "node lib/",
-    "format": "biome format --write ./src",
-    "lint": "biome lint ./src",
-    "check": "biome check --write ./src",
+    "format": "biome format --write ./src ./tests",
+    "lint": "biome lint ./src ./tests",
+    "check": "biome check --write ./src ./tests",
     "bundle:client": "npm run compile && npm pack --pack-destination ./public",
     "migrate": "tsx node_modules/knex/bin/cli.js migrate:latest",
-    "migrate:make": "tsx node_modules/knex/bin/cli.js migrate:make"
+    "migrate:make": "tsx node_modules/knex/bin/cli.js migrate:make",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest"
   },
   "dependencies": {
     "@feathersjs/adapter-commons": "^5.0.37",
@@ -61,14 +63,13 @@
     "@biomejs/biome": "^2.3.11",
     "@feathersjs/cli": "^5.0.37",
     "@feathersjs/rest-client": "^5.0.37",
-    "@types/mocha": "^10.0.10",
     "@types/node": "^24.10.9",
     "axios": "^1.13.2",
     "cross-env": "^10.1.0",
-    "mocha": "^11.7.5",
     "shx": "^0.4.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
   },
   "overrides": {
     "tar": "^7.5.3",

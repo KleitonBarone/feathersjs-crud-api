@@ -1,3 +1,8 @@
 {
-  "port": 8998
+  "port": 8998,
+  "sqlite": {
+    "client": "sqlite3",
+    "connection": "feathersjs-crud-api-test.sqlite",
+    "useNullAsDefault": true
+  }
 }
