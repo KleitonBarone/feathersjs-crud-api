@@ -37,8 +37,8 @@
     "lint": "biome lint ./src",
     "check": "biome check --write ./src",
     "bundle:client": "npm run compile && npm pack --pack-destination ./public",
-    "migrate": "knex migrate:latest",
-    "migrate:make": "knex migrate:make"
+    "migrate": "tsx node_modules/knex/bin/cli.js migrate:latest",
+    "migrate:make": "tsx node_modules/knex/bin/cli.js migrate:make"
   },
   "dependencies": {
     "@feathersjs/adapter-commons": "^5.0.37",
